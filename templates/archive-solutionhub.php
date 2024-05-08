@@ -125,11 +125,33 @@
 
     }
 
+    .solution-container {
+        position: relative;
+    }
+
+    .solution-wrapper {
+        position: relative;
+    }
+
+    .solution-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .solution-container .solution-wrapper {
+        margin: 10px 0px;
+    }
+
     @media screen and (max-width: 767px) {
         .solution-wrapper.triggered .content {
             display: block;
             overflow-y: auto; 
-            max-height: 400px;
+            max-height: 300px;
+        }
+        body.expandable-open {
+            /* overflow: hidden; */
         }
     }
 
@@ -669,36 +691,29 @@ function maturity_level_render($level)
 
     solutions.forEach((val, i) => {
         val.querySelector(".header").addEventListener("click", (e) => {
-            let afterMe = false;
-            let clientHeight = 0;
-            let containerHeight = 0;
+            // Scroll the expandable content into view
+            val.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            solutions.forEach((_v) => {
-                _v.style.top = "14px";
+            // Add a class to the body to prevent scrolling
+            body.classList.add("no-scroll");
 
-                if (_v === val) {
-                    afterMe = true;
-                    val.classList.toggle("triggered");
-                    if (val.classList.contains("triggered")) {
-                        clientHeight = val.querySelector(".content").clientHeight;
-                    } else {
-                        clientHeight = 0;
-                    }
-                    return;
-                }
+            // Toggle the "triggered" class on the clicked expandable content
+            val.classList.toggle("triggered");
 
-                if (afterMe) {
-                    _v.style.top = (clientHeight + 13) + "px";
-                }
-                _v.classList.remove("triggered");
-                containerHeight += _v.clientHeight + 20;
-            });
+            // Calculate the height of the container after expanding/collapsing
+            let containerHeight = Array.from(solutions)
+                .filter(_v => !_v.classList.contains("triggered"))
+                .reduce((acc, _v) => acc + _v.clientHeight + 20, 0);
+
+            // Calculate the height of the clicked expandable content
+            let clientHeight = val.querySelector(".content").clientHeight;
 
             // Set a fixed height for the solution container
-            solutionContainer.style.height = (containerHeight + clientHeight) + "px";
+            // solutionContainer.style.height = (containerHeight + clientHeight) + "px";
+            solutionContainer.style.height = "auto";
 
-            // Hide the main scroll bar if an expandable section is opened
-            body.classList.toggle("no-scroll", val.classList.contains("triggered"));
+            // Add a class to the body when an expandable section is opened
+            body.classList.toggle("expandable-open", val.classList.contains("triggered"));
         });
     });
 
@@ -723,7 +738,7 @@ function maturity_level_render($level)
         animationDuration: 0.2, // in seconds
     };
 
-    const filterizr = new Filterizr(".solution-container", options);
+    // const filterizr = new Filterizr(".solution-container", options);
 
     let filters = document.querySelectorAll("[data-multifilter]");
     filters.forEach((el, key) => {
