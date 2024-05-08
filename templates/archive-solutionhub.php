@@ -483,27 +483,27 @@ function maturity_level_render($level)
 
                         ?>
                         <div data-category="<?= join(',', $merged_filter_list) ?>" class="solution-wrapper custom-solution-wrapper bg-white hover-shadow transition">
-                            <div class="header custom-header" style="cursor:pointer;">
-                                <div class="select-none custom-image-container" style="width:250px;max-height:82px;  padding: 5px;text-align: center;">
+                            <div class="header custom-header idt-conatiner">
+                                <div class="select-none custom-image-container">
                                     <img class="h-full" src="<?= $image[0] ?? "https://aharvey.com/wp-content/uploads/2018/03/bg-placeholder.jpg" ?>" <?= (!isset($img[0])) ? "style=\"object-fit: cover;width: 100%;\"" : "" ?> />
                                 </div>
-                                <div class="custom-vendor-container" style="width:210px;">
+                                <div class="custom-vendor-container">
                                     <p class="idt-label">Vendor Name</p>
                                     <p class="text-sm cut-text"><?= get_post_meta($post->ID, 'vendor_title', true) ?></p>
                                 </div>
-                                <div class="custom-solution-name-container" style="width:225px;">
+                                <div class="custom-solution-name-container">
                                     <p class="idt-label">Solution Name</p>
                                     <p class="text-sm font-bold cut-text"><?= the_title() ?></p>
                                 </div>
-                                <div class="custom-solution-type-container" style="width:150px;">
+                                <div class="custom-solution-type-container">
                                     <p class="idt-label">Solution Type</p>
                                     <p class="text-sm font-bold cut-text"><?= $solution_type_string ?></p>
                                 </div>
-                                <div class="">
+                                <div class="custom-solution-type-container">
                                     <p class="idt-label">Maturity Level</p>
                                     <?= maturity_level_render(get_post_meta($post->ID, 'maturity_level', true)) ?>
                                 </div>
-                                <div class="custom-icons-container" style="margin-left: auto; gap:15px;">
+                                <div class="custom-icons-container">
                                     <?php if (get_post_meta($post->ID, 'certified', true) == "on") : ?>
                                         <div class="custom-certified-icon">
                                             <svg id="Gruppe_5274" data-name="Gruppe 5274" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45.434" height="45.43" viewBox="0 0 45.434 45.43">
@@ -547,25 +547,25 @@ function maturity_level_render($level)
                                 <div class="custom-row-one">
                                     <div>
                                         <p class="idt-content-label">Solution Name</p>
-                                        <p class="idt-dynmic-value"><?= the_title() ?></p>
+                                        <p class="idt-dynamic-value"><?= the_title() ?></p>
                                     </div>
                                     <div>
                                         <p class="idt-content-label">Address</p>
-                                        <p class="idt-dynmic-value"><?= nl2br(get_post_meta($post->ID, 'adress', true)) ?></p>
+                                        <p class="idt-dynamic-value"><?= nl2br(get_post_meta($post->ID, 'adress', true)) ?></p>
                                     </div>
                                     <div>
                                         <p class="idt-content-label">Version of Solution</p>
-                                        <p class="idt-dynmic-value"><?= get_post_meta($post->ID, 'version', true) ?></p>
+                                        <p class="idt-dynamic-value"><?= get_post_meta($post->ID, 'version', true) ?></p>
                                     </div>
                                     <div>
                                         <p class="idt-content-label">Used AAS Standards</p>
-                                        <p class="idt-dynmic-value"><?= $ass_standard_string ?></p>
+                                        <p class="idt-dynamic-value"><?= $ass_standard_string ?></p>
                                     </div>
                                 </div>
                                 <div class="custom-row-two">
                                     <div>
                                         <p class="idt-content-label">Description</p>
-                                        <p class="idt-dynmic-value"><?= nl2br(get_post_meta($post->ID, 'description', true)) ?></p>
+                                        <p class="idt-dynamic-value"><?= nl2br(get_post_meta($post->ID, 'description', true)) ?></p>
                                         <hr class="idta-divider" />
                                     </div>
                                     <div>
@@ -615,179 +615,7 @@ function maturity_level_render($level)
           
                 <!-- New Design -->
 
-                <main class="flex flex-col gap-2 solution-container">
-                    <?php
-                    foreach ($all_solutions as $post) :  ?>
-                        <?php
-                        $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
-
-                        $solution_type_list = get_the_terms($post->ID, 'solution-type');
-                        $solution_type_string = join(', ', wp_list_pluck($solution_type_list, 'name'));
-
-                        $ass_standard_list = get_the_terms($post->ID, 'aas-standards');
-                        $ass_standard_string = join(', ', wp_list_pluck($ass_standard_list, 'name'));
-
-                        $target_market_list = get_the_terms($post->ID, 'target-market');
-                        $target_market_string = join(', ', wp_list_pluck($target_market_list, 'name'));
-
-                        $used_oss_list = get_the_terms($post->ID, 'used-aas-oss');
-                        $used_oss_string = join(', ', wp_list_pluck($used_oss_list, 'name'));
-
-                        $lifecycle_list = get_the_terms($post->ID, 'relevant-lifecycle');
-                        $lifecycle_string = join(', ', wp_list_pluck($lifecycle_list, 'name'));
-
-                        $submodel_list = get_the_terms($post->ID, 'used-submodels');
-                        $submodel_string = join(', ', wp_list_pluck($submodel_list, 'name'));
-
-                        $application_list = get_the_terms($post->ID, 'solution-applications');
-                        $application_string = join(', ', wp_list_pluck($application_list, 'name'));
-
-                        $merged_filter_list = array_merge(
-                            wp_list_pluck($ass_standard_list, 'term_id'),
-                            wp_list_pluck($solution_type_list, 'term_id'),
-                            wp_list_pluck($target_market_list, 'term_id'),
-                            wp_list_pluck($used_oss_list, 'term_id'),
-                            wp_list_pluck($lifecycle_list, 'term_id'),
-                            wp_list_pluck($submodel_list, 'term_id'),
-                            wp_list_pluck($application_list, 'term_id'),
-                            ["ml_" . get_post_meta($post->ID, 'maturity_level', true)],
-                        );
-
-                        ?>
-                        <div data-category="<?= join(',', $merged_filter_list) ?>" class="solution-wrapper w-full bg-white hover:shadow-xl transition">
-                            <div class="header p-4 flex text-gray-800 gap-8" style="cursor:pointer;">
-                                <div class="h-auto flex justify-center select-none" style="width:250px;max-height:82px;  padding: 5px;text-align: center;">
-                                    <img class="h-full" src="<?= $image[0] ?? "https://aharvey.com/wp-content/uploads/2018/03/bg-placeholder.jpg" ?>" <?= (!isset($img[0])) ? "style=\"object-fit: cover;width: 100%;\"" : "" ?> />
-                                </div>
-                                <div class="flex flex-col justify-between pt-4 pb-4" style="width:210px;">
-                                    <p class="text-blue-500 text-sm">Vendor Name</p>
-                                    <p class="text-sm cut-text"><?= get_post_meta($post->ID, 'vendor_title', true) ?></p>
-                                </div>
-                                <div class="flex flex-col justify-between pt-4 pb-4" style="width:225px;">
-                                    <p class="text-blue-500 text-sm">Solution Name</p>
-                                    <p class="text-sm font-bold cut-text"><?= the_title() ?></p>
-                                </div>
-                                <div class="flex flex-col justify-between pt-4 pb-4" style="width:150px;">
-                                    <p class="text-blue-500 text-sm">Solution Type</p>
-                                    <p class="text-sm font-bold cut-text"><?= $solution_type_string ?></p>
-                                </div>
-                                <div class="flex flex-col justify-between pt-4 pb-4">
-                                    <p class="text-blue-500 text-sm">Maturity Level</p>
-                                    <?= maturity_level_render(get_post_meta($post->ID, 'maturity_level', true)) ?>
-                                </div>
-                                <div class="flex items-center" style="margin-left: auto; gap:15px;">
-                                    <?php if (get_post_meta($post->ID, 'certified', true) == "on") : ?>
-                                        <div class="">
-                                            <svg id="Gruppe_5274" data-name="Gruppe 5274" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45.434" height="45.43" viewBox="0 0 45.434 45.43">
-                                                <defs>
-                                                    <clipPath id="clip-path">
-                                                        <rect id="Rechteck_210" data-name="Rechteck 210" width="45.434" height="45.43" fill="none" />
-                                                    </clipPath>
-                                                </defs>
-                                                <path id="Pfad_3" data-name="Pfad 3" d="M45.431,22.725l0,0v-.008ZM22.728,0,18.715,2.538l-4.679-.814L11.3,5.6,6.664,6.648,5.617,11.281,1.736,14.017l.8,4.679L0,22.705l2.538,4.013L1.724,31.4,5.6,34.138,6.648,38.77l4.632,1.047L14.017,43.7l4.679-.8,4.013,2.534,4.013-2.538,4.679.813,2.74-3.877,4.632-1.047,1.047-4.632,3.88-2.736-.8-4.679,2.532-4.009L42.9,18.715l.814-4.679L39.832,11.3,38.785,6.664,34.153,5.617,31.417,1.736l-4.679.8Z" fill="#0028cd" />
-                                                <g id="Gruppe_5267" data-name="Gruppe 5267" transform="translate(0 0)">
-                                                    <g id="Gruppe_5266" data-name="Gruppe 5266" clip-path="url(#clip-path)">
-                                                        <path id="Pfad_4" data-name="Pfad 4" d="M53.411,54.422a.791.791,0,0,1-.779.8H52.15a.789.789,0,0,1-.779-.8V53.391a.791.791,0,0,0-.234-.568l-.611-.619a.765.765,0,0,0-.549-.23H39.39a.771.771,0,0,0-.572.257l-.533.6a.815.815,0,0,0-.206.541v1.055a.791.791,0,0,1-.778.8h-.522a.789.789,0,0,1-.779-.8V46.415a.818.818,0,0,1,.206-.545l1.257-1.394a.771.771,0,0,1,.572-.257h13.34a.771.771,0,0,1,.572.257L53.2,45.87a.818.818,0,0,1,.206.545Z" transform="translate(-21.987 -27.007)" fill="#fff" />
-                                                        <path id="Pfad_5" data-name="Pfad 5" d="M33.426,49.318A15.891,15.891,0,1,1,49.318,33.426,15.91,15.91,0,0,1,33.426,49.318m0-30.144A14.252,14.252,0,1,0,47.679,33.426,14.269,14.269,0,0,0,33.426,19.174" transform="translate(-10.709 -10.709)" fill="#fff" />
-                                                        <path id="Pfad_6" data-name="Pfad 6" d="M77.843,68.4l-9.459,9.844L64.06,74.005,73.7,64.27Z" transform="translate(-39.124 -39.253)" fill="#0028cd" />
-                                                        <path id="Pfad_7" data-name="Pfad 7" d="M70.812,81.318l-3.4-3.3,1.211-1.245,2.162,2.1,5.961-6.046,1.236,1.219Z" transform="translate(-41.173 -44.478)" fill="#ff500f" />
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    <?php
-                                    endif;
-                                    $url = get_post_meta($post->ID, 'solution_url', true);
-                                    if ($url != null && $url  != "") {
-                                    ?>
-                                        <a target="_blank" href="<?= $url ?>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16.938" height="16.938" viewBox="0 0 16.938 16.938">
-                                                <path id="Icon_open-external-link" data-name="Icon open-external-link" d="M0,0V16.938H16.938V12.7H14.82V14.82H2.117V2.117H4.234V0ZM8.469,0l3.176,3.176L6.352,8.469l2.117,2.117,5.293-5.293,3.176,3.176V0Z" fill="#0729b2" />
-                                            </svg>
-                                        </a>
-                                    <?php
-                                    }
-                                    ?>
-                                    <div class="expand-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="19.422" height="10.711" viewBox="0 0 19.422 10.711">
-                                            <g id="Gruppe_1" data-name="Gruppe 1" transform="translate(652.582 1642.198) rotate(180)">
-                                                <path id="Pfad_1" data-name="Pfad 1" d="M634.574,1640.783l8.3-8.3,8.3,8.3" fill="none" stroke="#0729b2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <div class="pl-8 pr-8 pb-10 w-full max-w-content mx-auto flex gap-8">
-                                    <div class="row-one flex flex-col gap-4">
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Solution Name</p>
-                                            <p class="text-sm"><?= the_title() ?></p>
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Address</p>
-                                            <p class="text-sm"><?= nl2br(get_post_meta($post->ID, 'adress', true)) ?></p>
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Version of Solution</p>
-                                            <p class="text-sm"><?= get_post_meta($post->ID, 'version', true) ?></p>
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Used AAS Standards</p>
-                                            <p class="text-sm font-bold"><?= $ass_standard_string ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="row-two">
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Description</p>
-                                            <p class="text-sm"><?= nl2br(get_post_meta($post->ID, 'description', true)) ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Customer Benefits</p>
-                                            <p class="text-sm"><?= nl2br(get_post_meta($post->ID, 'benefits', true)) ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Target market</p>
-                                            <p class="text-sm font-bold"><?= $target_market_string ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Submodels</p>
-                                            <p class="text-sm font-bold"><?= $submodel_string ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Area of Operation</p>
-                                            <p class="text-sm"><?= get_post_meta($post->ID, 'operation', true) ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Applications</p>
-                                            <p class="text-sm"><?= $application_string ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Lifecylcephases</p>
-                                            <p class="text-sm font-bold"><?= $lifecycle_string ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">Used AAS open source software</p>
-                                            <p class="text-sm font-bold"><?= $used_oss_string ?></p>
-                                            <hr class="mt-4 mb-4 opacity-25" />
-                                        </div>
-                                        <div>
-                                            <p class="text-blue-500 text-sm mb-1">References</p>
-                                            <p class="text-sm"><?= get_post_meta($post->ID, 'references', true) ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </main>
+                
             </div>
         </div>
     </main>
