@@ -40,7 +40,9 @@
     }
 
     .solution-wrapper.triggered .content {
-        max-height: 100%;
+        display: block;
+        overflow-y: auto; 
+        max-height: 500px;
     }
 
     .solution-wrapper.triggered {
@@ -122,6 +124,15 @@
         transform: rotate(-180deg);
 
     }
+
+    @media screen and (max-width: 767px) {
+        .solution-wrapper.triggered .content {
+            display: block;
+            overflow-y: auto; 
+            max-height: 400px;
+        }
+    }
+
 </style>
 <?php
 $image_url = "https://industrialdigitaltwin.org/wp-content/uploads/2021/09/2021-09-21_IDTA_Content-Hub-Header_01.jpg";
@@ -653,14 +664,19 @@ function maturity_level_render($level)
     })
 
     let solutions = document.querySelectorAll(".solution-wrapper");
+    const body = document.querySelector("body");
+    const solutionContainer = document.querySelector(".solution-container");
+
     solutions.forEach((val, i) => {
         val.querySelector(".header").addEventListener("click", (e) => {
             let afterMe = false;
             let clientHeight = 0;
             let containerHeight = 0;
-            document.querySelectorAll(".solution-wrapper").forEach((_v) => {
+
+            solutions.forEach((_v) => {
                 _v.style.top = "14px";
-                if (_v == val) {
+
+                if (_v === val) {
                     afterMe = true;
                     val.classList.toggle("triggered");
                     if (val.classList.contains("triggered")) {
@@ -670,16 +686,22 @@ function maturity_level_render($level)
                     }
                     return;
                 }
+
                 if (afterMe) {
                     _v.style.top = (clientHeight + 13) + "px";
                 }
                 _v.classList.remove("triggered");
                 containerHeight += _v.clientHeight + 20;
-            })
-            document.querySelector(".solution-container").style.height = (containerHeight + clientHeight) + "px";
-            console.log(containerHeight);
-        })
+            });
+
+            // Set a fixed height for the solution container
+            solutionContainer.style.height = (containerHeight + clientHeight) + "px";
+
+            // Hide the main scroll bar if an expandable section is opened
+            body.classList.toggle("no-scroll", val.classList.contains("triggered"));
+        });
     });
+
     const options = {
         gridItemsSelector: ".solution-wrapper",
         filter: "all", // Initial filter
