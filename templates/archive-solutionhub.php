@@ -8,6 +8,7 @@
 
     .solution-wrapper {
         overflow: hidden;
+        /* max-height: 116px; */
     }
 
     .solution-wrapper .content {
@@ -33,6 +34,8 @@
     }
 
     .solution-wrapper.triggered {
+
+        /* max-height: 111117px; */
         border-top: 2px solid rgb(0, 40, 205);
         --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         -webkit-box-shadow: 0 0 transparent, 0 0 transparent, var(--tw-shadow);
@@ -120,6 +123,20 @@
         background-repeat: no-repeat;
     }
 
+    .toggled [data-target] .asc::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20.836' height='11.918' viewBox='0 0 20.836 11.918'%3E%3Cg id='Gruppe_1' data-name='Gruppe 1' transform='translate(653.289 1642.905) rotate(180)'%3E%3Cpath id='Pfad_1' data-name='Pfad 1' d='M634.574,1640.783l8.3-8.3,1.383,1.383,1.21,1.21,5.7,5.7' fill='none' stroke='%23ff6200' stroke-linecap='round' stroke-linejoin='round' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E%0A");
+        background-position: center;
+        background-size: 90%;
+        background-repeat: no-repeat;
+    }
+
+    .toggled [data-target] .desc::after {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20.836' height='11.918' viewBox='0 0 20.836 11.918'%3E%3Cg id='Gruppe_1' data-name='Gruppe 1' transform='translate(-632.453 -1630.986)'%3E%3Cpath id='Pfad_1' data-name='Pfad 1' d='M634.574,1640.783l8.3-8.3,1.383,1.383,1.21,1.21,5.7,5.7' fill='none' stroke='%23ff6200' stroke-linecap='round' stroke-linejoin='round' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E%0A");
+        background-position: center;
+        background-size: 90%;
+        background-repeat: no-repeat;
+    }
+
     .toggled svg {
         transform: rotate(-180deg);
 
@@ -161,6 +178,13 @@ $image_url = "https://industrialdigitaltwin.org/wp-content/uploads/2021/09/2021-
 
 
 global $post;
+
+$switch_back = false;
+$lang = get_site_lang_string();
+if (get_current_blog_id() == 2) {
+    $switch_back = true;
+    switch_to_blog(1);
+}
 $args = array(
     'post_type'           => 'solutions-hub',
     'posts_per_page'      => 9999999,
@@ -212,6 +236,7 @@ $solution_applications_filter = get_terms(array(
 ));
 $solution_applications_filter_string = wp_list_pluck($solution_applications_filter, 'term_id');
 $solution_applications_filter_name = wp_list_pluck($solution_applications_filter, 'name');
+
 
 
 function maturity_level_render($level)
@@ -268,19 +293,33 @@ function maturity_level_render($level)
                         <div class="w-full mb-8">
                             <?php
                             if (function_exists('yoast_breadcrumb')) {
+                                if ($switch_back) {
+                                    switch_to_blog(2);
+                                }
                                 echo yoast_breadcrumb('<p class="text-xs breadcrumbs" id="breadcrumbs">', '</p>');
+                                if ($switch_back) {
+                                    switch_to_blog(1);
+                                }
                             }; ?>
                         </div>
                         <h1 class="font-regular text-blue-500 leading-tight">
-                            <?= (get_site_lang_string() == "DE") ? "AAS Solutions Hub" : "AAS Solutions Hub" ?>
+                            <?= ($lang == "DE") ? "AAS Solutions Hub" : "AAS Solutions Hub" ?>
                         </h1>
                     </div>
                     <div class="md:pt-6 md:pl-4 text-gray-700">
-                        <?=
+                       
+                       <?=
                         (get_site_lang_string() == "DE")
-                            ? "Spezifikationen definieren Softwarestruktur, Schnittstelle und die Semantik der Verwaltungsschale und bilden damit die Grundlage für den standardisierten Digitalen Zwilling. Alle Spezifikationen für das Informationsmodell der Verwaltungsschale sind hier zu finden. "
-                            : "Specifications define the software structure, interface and semantics of the Asset Administration Shell and thus create the basis for the standardized Digital Twin. All specifications for the Asset Administration Shell information model can be found here."
-                        ?>
+                            ? "Get an overview of AAS-related software, products, services, demo factories and more with a coarse mapping into the solution landscape. Submitting an entry for an AAS solution is already possible starting from the concept phase. Please complete the following form. "
+                            : "Get an overview of AAS-related software, products, services, demo factories and more with a coarse mapping into the solution landscape. Submitting an entry for an AAS solution is already possible starting from the concept phase. Please complete the following form."                          
+                       ?>
+                         <p>
+                            <br>
+                                        <a class="border-2 border-red-500 mr-4 border-solid bg-white text-blue-500 rounded-md py-2 px-6 inline-flex items-center text-xs hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-colors duration-300 ease-in-out group" href=" https://forms.office.com/e/CyAK5U1c5Z?origin=lprLink" title="Zu den Fromula" target="_blank" rel="noopener noreferrer">
+                                          <span>Submit your entry</span>
+                                        </a>
+                            </p>
+                       
                     </div>
                 </div>
             </div>
@@ -288,8 +327,37 @@ function maturity_level_render($level)
         <div class="w-full bg-gray-300 pt-8 pb-16">
             <div class="w-full max-w-contentMd mx-auto relative">
                 <div class="px-4">
-                    <h3 class="text-gray-800">Filter</h3>
+                    <div style="display: flex;margin-bottom:5px;">
+                        <h3 class="text-gray-800">Filter</h3>
+                        <div class="flex items-center border border-gray-700 gap-2" style="border-bottom-width: 1px !important;margin-left:auto;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23.809" height="23.815" viewBox="0 0 23.809 23.815">
+                                <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M28.029,26.584,21.408,19.9a9.437,9.437,0,1,0-1.432,1.451l6.578,6.64a1.019,1.019,0,0,0,1.438.037A1.026,1.026,0,0,0,28.029,26.584ZM13.992,21.432a7.451,7.451,0,1,1,5.27-2.182A7.405,7.405,0,0,1,13.992,21.432Z" transform="translate(-4.5 -4.493)" fill="#8b8b8b" />
+                            </svg>
+                            <input class="text-gray-700 control" style="background:none;" type="text" name="search" placeholder="Search..." class="" data-search />
+                        </div>
+                    </div>
                     <div id="filter" class="flex gap-2">
+                        <div id="vendor-sort" class="relative w-auto dropdown">
+                            <p id="toggle_vendor-sort" class="relative toggle p-2 border text-sm text-gray-700 border-gray-700 flex items-center" style="border-width:1px;cursor:pointer;position:relative;">
+                                <span class="sorted-text text-xs p-2 absolute hidden" style="top: -10px;left: 0;background-color: #ff500f;border-radius: 100%;color: white;font-weight: bold;height:20px;width:20px;justify-content:center;align-items:center;">0</span>
+                                Sort by
+                                <span style="padding-left:4px;padding-top:3px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15.335" height="7.599" viewBox="0 0 15.335 7.599">
+                                        <g id="Gruppe_5153" data-name="Gruppe 5153" transform="translate(648.501 1639.085) rotate(180)">
+                                            <path id="Pfad_1" data-name="Pfad 1" d="M634.574,1637.677l6.259-5.19,6.259,5.19" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                        </g>
+                                    </svg>
+                                </span>
+                            </p>
+                            <div data-target="toggle_vendor-sort" class="filter-wrapper absolute hidden flex flex-col bg-gray-300 border border-gray-700 z-10" style="border-width: 1px;top:calc(100% - 2px);width: max-content;">
+                                <span id="sort-date" onclick="handleSort('date');" class="text-sm pr-12 p-2 control" style="cursor:pointer;">
+                                    Date
+                                </span>
+                                <span id="sort-vendor" onclick="handleSort('vendor');" class="text-sm pr-12 p-2 control" style="cursor:pointer;">
+                                    Vendor Name
+                                </span>
+                            </div>
+                        </div>
                         <div id="solution-type-filter" class="relative w-auto dropdown">
                             <p id="toggle_solution-type" class="relative toggle p-2 border text-sm text-gray-700 border-gray-700 flex items-center" style="border-width:1px;cursor:pointer;position:relative;">
 
@@ -468,12 +536,6 @@ function maturity_level_render($level)
                                 ?>
                             </div>
                         </div>
-                        <div class="flex items-center border border-gray-700 gap-2" style="border-bottom-width: 1px !important;margin-left:auto;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="23.809" height="23.815" viewBox="0 0 23.809 23.815">
-                                <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M28.029,26.584,21.408,19.9a9.437,9.437,0,1,0-1.432,1.451l6.578,6.64a1.019,1.019,0,0,0,1.438.037A1.026,1.026,0,0,0,28.029,26.584ZM13.992,21.432a7.451,7.451,0,1,1,5.27-2.182A7.405,7.405,0,0,1,13.992,21.432Z" transform="translate(-4.5 -4.493)" fill="#8b8b8b" />
-                            </svg>
-                            <input class="text-gray-700 control" style="background:none;" type="text" name="search" placeholder="Search..." class="" data-search />
-                        </div>
                     </div>
                 </div>
                 <!-- New Design -->
@@ -645,16 +707,46 @@ function maturity_level_render($level)
                         </div>
                     <?php endforeach; ?>
                 </main>
-          
-                <!-- New Design -->
-
-                
             </div>
         </div>
     </main>
 </div>
 
 <script>
+    const handleSort = function(value) {
+        if (value == "vendor") {
+            document.getElementById("sort-date").classList.remove("active");
+            document.getElementById("sort-date").classList.remove("asc");
+            document.getElementById("sort-date").classList.remove("desc");
+            let valueFilterEl = document.getElementById("sort-vendor");
+            if (valueFilterEl.classList.contains("asc")) {
+                filterizr.sort('vendor', 'desc');
+                valueFilterEl.classList.remove("asc");
+                valueFilterEl.classList.add("desc");
+            } else {
+                filterizr.sort('vendor', 'asc');
+                valueFilterEl.classList.add("asc");
+                valueFilterEl.classList.remove("desc");
+            }
+            valueFilterEl.classList.add("active");
+        }
+        if (value == "date") {
+            document.getElementById("sort-vendor").classList.remove("active");
+            document.getElementById("sort-vendor").classList.remove("asc");
+            document.getElementById("sort-vendor").classList.remove("desc");
+            let valueFilterEl = document.getElementById("sort-date");
+            if (valueFilterEl.classList.contains("asc")) {
+                filterizr.sort('index', 'desc');
+                valueFilterEl.classList.remove("asc");
+                valueFilterEl.classList.add("desc");
+            } else {
+                filterizr.sort('index', 'asc');
+                valueFilterEl.classList.add("asc");
+                valueFilterEl.classList.remove("desc");
+            }
+            valueFilterEl.classList.add("active");
+        }
+    };
     var simulateClick = function(elem) {
         // Create our event (with options)
         var evt = new MouseEvent("click", {
@@ -771,10 +863,23 @@ function maturity_level_render($level)
             let toggled = document.querySelectorAll(".toggled");
             toggled.forEach((v) => {
                 var id = v.querySelector("p").id;
-                document.querySelector("[data-target=" + id + "]").classList.toggle("hidden")
+                document.querySelector("[data-target=" + id + "]").classList.toggle("hidden");
                 v.classList.toggle("toggled");
             })
         }
-    }
+    };
+
+    if (document.getElementById("menu-item-80")) {
+        document.getElementById("menu-item-80").classList.remove("current_page_parent");
+    };
+    if (document.getElementById("menu-item-574")) {
+        document.getElementById("menu-item-574").classList.remove("current_page_parent");
+    };
 </script>
-<?php get_footer();
+
+<?php
+
+if ($switch_back) {
+    switch_to_blog(2);
+}
+get_footer();

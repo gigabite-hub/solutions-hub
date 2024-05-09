@@ -52,6 +52,3 @@ function adminCSS()
         }
     </style> <?php
             }
-
-            // https://github.com/Mass1milian0/Excel-Importer-for-wordpress/blob/main/importer.php
-            // TODO: Excel Importer

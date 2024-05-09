@@ -43,7 +43,7 @@ function solutions_hub()
         'supports'              => ['title', 'thumbnail'],
         'taxonomies'            => [''],
         'hierarchical'          => true,
-        'public'                => false,
+        'public'                => true,
         'show_ui'               => true,
         'show_in_menu'          => true,
         'menu_position'         => 5,
