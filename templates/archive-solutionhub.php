@@ -9,6 +9,8 @@
     .solution-wrapper {
         overflow: hidden;
         /* max-height: 116px; */
+        width: 1360px;
+        max-width: 100%;
     }
 
     .solution-wrapper .content {
@@ -155,6 +157,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin: 0px 20px;
     }
 
     .solution-container .solution-wrapper {
@@ -580,7 +583,7 @@ function maturity_level_render($level)
                         <div data-category="<?= join(',', $merged_filter_list) ?>" class="solution-wrapper custom-solution-wrapper bg-white hover-shadow transition">
                             <div class="header custom-header idt-conatiner">
                                 <div class="select-none custom-image-container">
-                                    <img class="h-full" src="<?= $image[0] ?? "https://aharvey.com/wp-content/uploads/2018/03/bg-placeholder.jpg" ?>" <?= (!isset($img[0])) ? "style=\"object-fit: cover;width: 100%;\"" : "" ?> />
+                                    <img class="h-full" src="<?= $image[0] ?? "https://aharvey.com/wp-content/uploads/2018/03/bg-placeholder.jpg" ?>" <?= (!isset($img[0])) ? "style=\"object-fit: contain;width: 100%;\"" : "" ?> />
                                 </div>
                                 <div class="custom-vendor-container">
                                     <p class="idt-label">Vendor Name</p>
